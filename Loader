@@ -89,7 +89,7 @@
  selectionCorner.Parent = selectionFrame
   
  local titleLabel = Instance.new("TextLabel")
- titleLabel.Text = "选择管理员版本"
+ titleLabel.Text = "选择版本"
  titleLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
  titleLabel.TextSize = 18 
  titleLabel.Font = Enum.Font.GothamBold 
@@ -173,7 +173,7 @@
      noticeText.TextWrapped = true 
      noticeText.Parent = noticeFrame
      
-     wait(2)
+     wait(1)
      player:Kick(reason)
  end
   
