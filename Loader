@@ -179,13 +179,13 @@
   
  -- 按钮事件 
  civilianBtn.MouseButton1Click:Connect(function()
-     kickPlayer("开挂生孩子没屁眼")
+     kickPlayer("您选择了平民版，权限不足已被踢出")
  end)
   
  normalBtn.MouseButton1Click:Connect(function()
-     kickPlayer("开挂死妈")
+     kickPlayer("普通版管理员权限验证失败，您已被踢出")
  end)
   
  betaBtn.MouseButton1Click:Connect(function()
-     kickPlayer("开挂全家被车撞死死不瞑目肝肠寸断")
+     kickPlayer("内测版仅限授权用户使用，您无访问权限")
  end)
