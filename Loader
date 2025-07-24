@@ -1,0 +1,376 @@
+ local Players = game:GetService("Players")
+ local TweenService = game:GetService("TweenService")
+  
+ -- 确保本地玩家已加载
+ local player = Players.LocalPlayer 
+ while not player do 
+     wait()
+     player = Players.LocalPlayer 
+ end 
+  
+ local playerGui = player:WaitForChild("PlayerGui") 
+  
+ -- 清除可能存在的旧界面 
+ if playerGui:FindFirstChild("AdminLoadingGui") then 
+     playerGui.AdminLoadingGui:Destroy()
+ end 
+ if playerGui:FindFirstChild("VersionSelectionGui") then 
+     playerGui.VersionSelectionGui:Destroy()
+ end 
+  
+ -- 创建加载界面 
+ local loadingGui = Instance.new("ScreenGui")
+ loadingGui.Name = "AdminLoadingGui"
+ loadingGui.ResetOnSpawn = false
+ loadingGui.Parent = playerGui
+  
+ local loadingFrame = Instance.new("Frame")
+ loadingFrame.Name = "LoadingFrame"
+ loadingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ loadingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ loadingFrame.Size = UDim2.new(0, 350, 0, 180)
+ loadingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+ loadingFrame.BorderSizePixel = 0 
+ loadingFrame.Parent = loadingGui
+  
+ local corner = Instance.new("UICorner")
+ corner.CornerRadius = UDim.new(0, 10)
+ corner.Parent = loadingFrame
+  
+ local loadingLabel = Instance.new("TextLabel")
+ loadingLabel.Text = "ServerAdmin脚本中加载中...请耐心等待..."
+ loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ loadingLabel.TextSize = 16 
+ loadingLabel.Font = Enum.Font.Gotham 
+ loadingLabel.BackgroundTransparency = 1 
+ loadingLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
+ loadingLabel.Position = UDim2.new(0.05, 0, 0.3, 0)
+ loadingLabel.TextWrapped = true
+ loadingLabel.Parent = loadingFrame 
+  
+ local loadingCircle = Instance.new("ImageLabel")
+ loadingCircle.Image = "rbxassetid://5649863873"
+ loadingCircle.ImageColor3 = Color3.fromRGB(0, 170, 255)
+ loadingCircle.BackgroundTransparency = 1 
+ loadingCircle.Size = UDim2.new(0, 40, 0, 40)
+ loadingCircle.Position = UDim2.new(0.5, -20, 0.7, 0)
+ loadingCircle.Parent = loadingFrame 
+  
+ -- 旋转动画
+ local spinConn 
+ spinConn = game:GetService("RunService").RenderStepped:Connect(function()
+     loadingCircle.Rotation = loadingCircle.Rotation + 5
+ end)
+  
+ -- 模拟3秒加载时间 
+ wait(3)
+  
+ -- 移除加载界面 
+ spinConn:Disconnect()
+ loadingGui:Destroy()
+  
+ -- 创建选择界面 
+ local selectionGui = Instance.new("ScreenGui")
+ selectionGui.Name = "VersionSelectionGui"
+ selectionGui.ResetOnSpawn = false
+ selectionGui.Parent = playerGui
+  
+ local selectionFrame = Instance.new("Frame")
+ selectionFrame.Name = "SelectionFrame"
+ selectionFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ selectionFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ selectionFrame.Size = UDim2.new(0, 350, 0, 250)
+ selectionFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+ selectionFrame.BorderSizePixel = 0 
+ selectionFrame.Parent = selectionGui 
+  
+ local selectionCorner = Instance.new("UICorner")
+ selectionCorner.CornerRadius = UDim.new(0, 10)
+ selectionCorner.Parent = selectionFrame
+  
+ local titleLabel = Instance.new("TextLabel")
+ titleLabel.Text = "选择管理员版本"
+ titleLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+ titleLabel.TextSize = 18 
+ titleLabel.Font = Enum.Font.GothamBold 
+ titleLabel.BackgroundTransparency = 1 
+ titleLabel.Size = UDim2.new(1, 0, 0, 30)
+ titleLabel.Position = UDim2.new(0, 0, 0.05, 0)
+ titleLabel.Parent = selectionFrame
+  
+ -- 创建三个按钮
+ local buttonHeight = 40
+ local buttonSpacing = 10
+ local buttonY = 0.3 
+  
+ local civilianBtn = Instance.new("TextButton")
+ civilianBtn.Name = "CivilianButton"
+ civilianBtn.Text = "平民版"
+ civilianBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ civilianBtn.TextSize = 16 
+ civilianBtn.Font = Enum.Font.Gotham
+ civilianBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+ civilianBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ civilianBtn.Position = UDim2.new(0.1, 0, buttonY, 0)
+ civilianBtn.Parent = selectionFrame 
+  
+ local normalBtn = Instance.new("TextButton")
+ normalBtn.Name = "NormalButton"
+ normalBtn.Text = "普通版"
+ normalBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ normalBtn.TextSize = 16 
+ normalBtn.Font = Enum.Font.Gotham 
+ normalBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
+ normalBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ normalBtn.Position = UDim2.new(0.1, 0, buttonY + (buttonHeight + buttonSpacing)/250, 0)
+ normalBtn.Parent = selectionFrame
+  
+ local betaBtn = Instance.new("TextButton")
+ betaBtn.Name = "BetaButton"
+ betaBtn.Text = "内测版"
+ betaBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ betaBtn.TextSize = 16
+ betaBtn.Font = Enum.Font.Gotham
+ betaBtn.BackgroundColor3 = Color3.fromRGB(100, 80, 120)
+ betaBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ betaBtn.Position = UDim2.new(0.1, 0, buttonY + 2*(buttonHeight + buttonSpacing)/250, 0)
+ betaBtn.Parent = selectionFrame
+  
+ -- 按钮圆角
+ local buttonCorner = Instance.new("UICorner")
+ buttonCorner.CornerRadius = UDim.new(0, 6)
+ buttonCorner.Parent = civilianBtn
+ buttonCorner:Clone().Parent = normalBtn 
+ buttonCorner:Clone().Parent = betaBtn
+  
+ -- 踢出函数 
+ local function kickPlayer(reason)
+ -- 显示提示
+     local notice = Instance.new("ScreenGui")
+     notice.Name = "KickNotice"
+     notice.ResetOnSpawn = false
+     notice.Parent = playerGui
+     
+     local noticeFrame = Instance.new("Frame")
+     noticeFrame.Size = UDim2.new(0, 300, 0, 150)
+     noticeFrame.Position = UDim2.new(0.5, -150, 0.5, -75)
+     noticeFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+     noticeFrame.BorderSizePixel = 0 
+     noticeFrame.Parent = notice 
+     
+     local noticeCorner = Instance.new("UICorner")
+     noticeCorner.CornerRadius = UDim.new(0, 10)
+     noticeCorner.Parent = noticeFrame 
+     
+     local noticeText = Instance.new("TextLabel")
+     noticeText.Text = reason
+     noticeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+     noticeText.TextSize = 16 
+     noticeText.Font = Enum.Font.Gotham
+     noticeText.BackgroundTransparency = 1 
+     noticeText.Size = UDim2.new(0.9, 0, 0.7, 0)
+     noticeText.Position = UDim2.new(0.05, 0, 0.15, 0)
+     noticeText.TextWrapped = true 
+     noticeText.Parent = noticeFrame
+     
+     wait(2)
+     player:Kick(reason)
+ end
+  
+ -- 按钮事件 
+ civilianBtn.MouseButton1Click:Connect(function()
+     kickPlayer("开挂全家生孩子没屁眼")
+ end)
+  
+ normalBtn.MouseButton1Click:Connect(function()
+     kickPlayer(" local Players = game:GetService("Players")
+ local TweenService = game:GetService("TweenService")
+  
+ -- 确保本地玩家已加载
+ local player = Players.LocalPlayer 
+ while not player do 
+     wait()
+     player = Players.LocalPlayer 
+ end 
+  
+ local playerGui = player:WaitForChild("PlayerGui") 
+  
+ -- 清除可能存在的旧界面 
+ if playerGui:FindFirstChild("AdminLoadingGui") then 
+     playerGui.AdminLoadingGui:Destroy()
+ end 
+ if playerGui:FindFirstChild("VersionSelectionGui") then 
+     playerGui.VersionSelectionGui:Destroy()
+ end 
+  
+ -- 创建加载界面 
+ local loadingGui = Instance.new("ScreenGui")
+ loadingGui.Name = "AdminLoadingGui"
+ loadingGui.ResetOnSpawn = false
+ loadingGui.Parent = playerGui
+  
+ local loadingFrame = Instance.new("Frame")
+ loadingFrame.Name = "LoadingFrame"
+ loadingFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ loadingFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ loadingFrame.Size = UDim2.new(0, 350, 0, 180)
+ loadingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+ loadingFrame.BorderSizePixel = 0 
+ loadingFrame.Parent = loadingGui
+  
+ local corner = Instance.new("UICorner")
+ corner.CornerRadius = UDim.new(0, 10)
+ corner.Parent = loadingFrame
+  
+ local loadingLabel = Instance.new("TextLabel")
+ loadingLabel.Text = "ServerAdmin脚本中加载中...请耐心等待..."
+ loadingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ loadingLabel.TextSize = 16 
+ loadingLabel.Font = Enum.Font.Gotham 
+ loadingLabel.BackgroundTransparency = 1 
+ loadingLabel.Size = UDim2.new(0.9, 0, 0.5, 0)
+ loadingLabel.Position = UDim2.new(0.05, 0, 0.3, 0)
+ loadingLabel.TextWrapped = true
+ loadingLabel.Parent = loadingFrame 
+  
+ local loadingCircle = Instance.new("ImageLabel")
+ loadingCircle.Image = "rbxassetid://5649863873"
+ loadingCircle.ImageColor3 = Color3.fromRGB(0, 170, 255)
+ loadingCircle.BackgroundTransparency = 1 
+ loadingCircle.Size = UDim2.new(0, 40, 0, 40)
+ loadingCircle.Position = UDim2.new(0.5, -20, 0.7, 0)
+ loadingCircle.Parent = loadingFrame 
+  
+ -- 旋转动画
+ local spinConn 
+ spinConn = game:GetService("RunService").RenderStepped:Connect(function()
+     loadingCircle.Rotation = loadingCircle.Rotation + 5
+ end)
+  
+ -- 模拟3秒加载时间 
+ wait(3)
+  
+ -- 移除加载界面 
+ spinConn:Disconnect()
+ loadingGui:Destroy()
+  
+ -- 创建选择界面 
+ local selectionGui = Instance.new("ScreenGui")
+ selectionGui.Name = "VersionSelectionGui"
+ selectionGui.ResetOnSpawn = false
+ selectionGui.Parent = playerGui
+  
+ local selectionFrame = Instance.new("Frame")
+ selectionFrame.Name = "SelectionFrame"
+ selectionFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+ selectionFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+ selectionFrame.Size = UDim2.new(0, 350, 0, 250)
+ selectionFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 45)
+ selectionFrame.BorderSizePixel = 0 
+ selectionFrame.Parent = selectionGui 
+  
+ local selectionCorner = Instance.new("UICorner")
+ selectionCorner.CornerRadius = UDim.new(0, 10)
+ selectionCorner.Parent = selectionFrame
+  
+ local titleLabel = Instance.new("TextLabel")
+ titleLabel.Text = "选择管理员版本"
+ titleLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+ titleLabel.TextSize = 18 
+ titleLabel.Font = Enum.Font.GothamBold 
+ titleLabel.BackgroundTransparency = 1 
+ titleLabel.Size = UDim2.new(1, 0, 0, 30)
+ titleLabel.Position = UDim2.new(0, 0, 0.05, 0)
+ titleLabel.Parent = selectionFrame
+  
+ -- 创建三个按钮
+ local buttonHeight = 40
+ local buttonSpacing = 10
+ local buttonY = 0.3 
+  
+ local civilianBtn = Instance.new("TextButton")
+ civilianBtn.Name = "CivilianButton"
+ civilianBtn.Text = "平民版"
+ civilianBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ civilianBtn.TextSize = 16 
+ civilianBtn.Font = Enum.Font.Gotham
+ civilianBtn.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+ civilianBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ civilianBtn.Position = UDim2.new(0.1, 0, buttonY, 0)
+ civilianBtn.Parent = selectionFrame 
+  
+ local normalBtn = Instance.new("TextButton")
+ normalBtn.Name = "NormalButton"
+ normalBtn.Text = "普通版"
+ normalBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ normalBtn.TextSize = 16 
+ normalBtn.Font = Enum.Font.Gotham 
+ normalBtn.BackgroundColor3 = Color3.fromRGB(80, 80, 100)
+ normalBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ normalBtn.Position = UDim2.new(0.1, 0, buttonY + (buttonHeight + buttonSpacing)/250, 0)
+ normalBtn.Parent = selectionFrame
+  
+ local betaBtn = Instance.new("TextButton")
+ betaBtn.Name = "BetaButton"
+ betaBtn.Text = "内测版"
+ betaBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ betaBtn.TextSize = 16
+ betaBtn.Font = Enum.Font.Gotham
+ betaBtn.BackgroundColor3 = Color3.fromRGB(100, 80, 120)
+ betaBtn.Size = UDim2.new(0.8, 0, 0, buttonHeight)
+ betaBtn.Position = UDim2.new(0.1, 0, buttonY + 2*(buttonHeight + buttonSpacing)/250, 0)
+ betaBtn.Parent = selectionFrame
+  
+ -- 按钮圆角
+ local buttonCorner = Instance.new("UICorner")
+ buttonCorner.CornerRadius = UDim.new(0, 6)
+ buttonCorner.Parent = civilianBtn
+ buttonCorner:Clone().Parent = normalBtn 
+ buttonCorner:Clone().Parent = betaBtn
+  
+ -- 踢出函数 
+ local function kickPlayer(reason)
+ -- 显示提示
+     local notice = Instance.new("ScreenGui")
+     notice.Name = "KickNotice"
+     notice.ResetOnSpawn = false
+     notice.Parent = playerGui
+     
+     local noticeFrame = Instance.new("Frame")
+     noticeFrame.Size = UDim2.new(0, 300, 0, 150)
+     noticeFrame.Position = UDim2.new(0.5, -150, 0.5, -75)
+     noticeFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 50)
+     noticeFrame.BorderSizePixel = 0 
+     noticeFrame.Parent = notice 
+     
+     local noticeCorner = Instance.new("UICorner")
+     noticeCorner.CornerRadius = UDim.new(0, 10)
+     noticeCorner.Parent = noticeFrame 
+     
+     local noticeText = Instance.new("TextLabel")
+     noticeText.Text = reason
+     noticeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+     noticeText.TextSize = 16 
+     noticeText.Font = Enum.Font.Gotham
+     noticeText.BackgroundTransparency = 1 
+     noticeText.Size = UDim2.new(0.9, 0, 0.7, 0)
+     noticeText.Position = UDim2.new(0.05, 0, 0.15, 0)
+     noticeText.TextWrapped = true 
+     noticeText.Parent = noticeFrame
+     
+     wait(2)
+     player:Kick(reason)
+ end
+  
+ -- 按钮事件 
+ civilianBtn.MouseButton1Click:Connect(function()
+     kickPlayer("开挂全家生孩子没屁眼")
+ end)
+  
+ normalBtn.MouseButton1Click:Connect(function()
+     kickPlayer("开挂没妈")
+ end)
+  
+ betaBtn.MouseButton1Click:Connect(function()
+     kickPlayer("开挂全家被车撞死死不瞑目")
+ end)
