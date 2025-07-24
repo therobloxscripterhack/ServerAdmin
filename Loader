@@ -89,7 +89,7 @@
  selectionCorner.Parent = selectionFrame
   
  local titleLabel = Instance.new("TextLabel")
- titleLabel.Text = "选择管理员版本"
+ titleLabel.Text = "选择版本"
  titleLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
  titleLabel.TextSize = 18 
  titleLabel.Font = Enum.Font.GothamBold 
@@ -105,7 +105,7 @@
   
  local civilianBtn = Instance.new("TextButton")
  civilianBtn.Name = "CivilianButton"
- civilianBtn.Text = "平民版"
+ civilianBtn.Text = "V1"
  civilianBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
  civilianBtn.TextSize = 16 
  civilianBtn.Font = Enum.Font.Gotham
@@ -116,7 +116,7 @@
   
  local normalBtn = Instance.new("TextButton")
  normalBtn.Name = "NormalButton"
- normalBtn.Text = "普通版"
+ normalBtn.Text = "V2"
  normalBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
  normalBtn.TextSize = 16 
  normalBtn.Font = Enum.Font.Gotham 
@@ -127,7 +127,7 @@
   
  local betaBtn = Instance.new("TextButton")
  betaBtn.Name = "BetaButton"
- betaBtn.Text = "内测版"
+ betaBtn.Text = "内测"
  betaBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
  betaBtn.TextSize = 16
  betaBtn.Font = Enum.Font.Gotham
